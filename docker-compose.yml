@@ -1,0 +1,29 @@
+services:
+  api:
+    image: python:3.10  # Usaremos uma imagem base do Python 3.10
+    container_name: fastapi_api
+    working_dir: /app
+    volumes:
+      - .:/app  # Monta o diretório atual como volume no container
+    ports:
+      - "8000:8000"  # Expõe a API na porta 8000
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/analisador  # Conexão com MongoDB
+    depends_on:
+      - mongodb  # Aguarda o MongoDB iniciar antes
+    command: >
+      sh -c "pip install fastapi uvicorn motor textblob nltk googletrans==4.0.0-rc1 langdetect && 
+      python -m textblob.download_corpora && 
+      uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
+
+  mongodb:
+    image: mongo:6.0  # Versão do MongoDB
+    container_name: mongo_db
+    ports:
+      - "27017:27017"  # Porta padrão do MongoDB
+    volumes:
+      - mongo_data:/data/db  # Volume para persistência dos dados
+    restart: always
+
+volumes:
+  mongo_data:
