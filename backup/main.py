@@ -1,9 +1,8 @@
 from fastapi import FastAPI, HTTPException
-from fastapi.middleware.cors import CORSMiddleware  # Importar o middleware CORS
 from motor.motor_asyncio import AsyncIOMotorClient
 from pydantic import BaseModel
 import os
-import datetime
+import datetime  # Mantemos datetime de forma otimizada
 from googletrans import Translator
 from textblob import TextBlob
 import nltk
@@ -11,15 +10,6 @@ from nltk.sentiment import SentimentIntensityAnalyzer
 
 # Criar a aplicação FastAPI
 app = FastAPI()
-
-# Configurar o middleware CORS
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # Permitir apenas localhost:3000
-    allow_credentials=True,
-    allow_methods=["*"],  # Permitir todos os métodos (GET, POST, etc.)
-    allow_headers=["*"],  # Permitir todos os headers
-)
 
 # Baixar recursos do NLTK necessários
 nltk.download('vader_lexicon')

@@ -5,6 +5,8 @@ services:
     working_dir: /app
     volumes:
       - .:/app  # Monta o diretório atual como volume no container
+    networks:
+      - npl-api  # Rede para comunicação entre os containers
     ports:
       - "8000:8000"  # Expõe a API na porta 8000
     environment:
@@ -21,9 +23,15 @@ services:
     container_name: mongo_db
     ports:
       - "27017:27017"  # Porta padrão do MongoDB
+    networks:
+      - npl-api  # Rede para comunicação entre os containers
     volumes:
       - mongo_data:/data/db  # Volume para persistência dos dados
     restart: always
 
 volumes:
   mongo_data:
+
+networks:
+  npl-api:
+    external: true
